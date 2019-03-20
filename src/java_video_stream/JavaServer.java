@@ -72,7 +72,7 @@ public class JavaServer {
 
 		// TODO code application logic here
 
-		ServerSocket welcomeSocket = new ServerSocket(6782);
+		ServerSocket welcomeSocket = new ServerSocket(8082);
 		System.out.println(welcomeSocket.isClosed());
 		Socket connectionSocket[] = new Socket[30];
 		inFromClient = new BufferedReader[30];

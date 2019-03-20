@@ -49,7 +49,9 @@ public class JavaClient {
         
 //        byte[] ipAdrss= new byte[] {157, 253, 228, 220};
         
-        InetAddress addr = InetAddress.getByName("157.253.228.220");
+//        InetAddress addr = InetAddress.getByName("157.253.228.220");
+        InetAddress addr = InetAddress.getLocalHost();
+
         
         DatagramPacket dp = new DatagramPacket(init,init.length,addr,4321);
         
@@ -66,7 +68,8 @@ public class JavaClient {
         
         String modifiedSentence;
 
-        InetAddress inetAddress = InetAddress.getByName("157.253.228.220");
+//        InetAddress inetAddress = InetAddress.getByName("157.253.228.220");
+        InetAddress inetAddress = InetAddress.getLocalHost();
         //.getByName(String hostname); "CL11"
         System.out.println(inetAddress);
 
