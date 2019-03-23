@@ -1,78 +1,62 @@
 package java_video_stream;
 
-import com.sun.jna.Native;
-
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
-
 import com.sun.jna.NativeLibrary;
-import com.sun.jna.platform.win32.WinUser.POINT;
 
-import java.nio.file.Files;
-
-import uk.co.caprica.vlcj.binding.LibVlc;
 import uk.co.caprica.vlcj.player.MediaPlayerFactory;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import uk.co.caprica.vlcj.player.embedded.videosurface.CanvasVideoSurface;
-import uk.co.caprica.vlcj.runtime.RuntimeUtil;
-import uk.co.caprica.vlcj.runtime.x.LibXUtil;
-
-//import uk.co.caprica.vlcj.runtime.windows.WindowsRuntimeUtil;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 
-/**
- *
- * @author imran
- */
+
 public class JavaServer {
 
 	/**
 	 * @param args
 	 *            the command line arguments
 	 */
+	
+	//------------------------------------------------------------------------
+	// Atributos
+	//------------------------------------------------------------------------
+	
 	public static InetAddress[] inet;
 	public static int[] port;
 	public static int i;
 	static int count = 0;
 	public static BufferedReader[] inFromClient;
 	public static DataOutputStream[] outToClient;
+	public Vidthread videito;
 	
 	public static void main(String[] args) throws Exception
 	{
 		JavaServer jv = new JavaServer();
 	}
-
 	
 	
-	public JavaServer() throws Exception {
+		public JavaServer() throws Exception {
 		
 		
-		NativeLibrary.addSearchPath("libvlc", System.getenv("ProgramFiles") + "/VideoLAN/VLC");
+		NativeLibrary.addSearchPath("libvlc", System.getenv("ProgramFiles") + "\\VideoLAN\\VLC");
 
 		JavaServer.inet = new InetAddress[30];
+		
 		port = new int[30];
 
-		// TODO code application logic here
-
-		ServerSocket welcomeSocket = new ServerSocket(8082);
+		ServerSocket welcomeSocket = new ServerSocket(8082); // AQUI SE CAMBIO
 		System.out.println(welcomeSocket.isClosed());
 		Socket connectionSocket[] = new Socket[30];
 		inFromClient = new BufferedReader[30];
@@ -81,13 +65,13 @@ public class JavaServer {
 		DatagramSocket serv = new DatagramSocket(4321);
 
 		byte[] buf = new byte[62000];
-		// Socket[] sc = new Socket[5];
+		
 		DatagramPacket dp = new DatagramPacket(buf, buf.length);
+		
+		dp.setPort(8082);
 
 		Canvas_Demo canv = new Canvas_Demo();
 		System.out.println("Gotcha");
-
-		// OutputStream[] os = new OutputStream[5];
 
 		i = 0;
 		
@@ -143,17 +127,13 @@ public class JavaServer {
 class Vidthread extends Thread {
 
 	int clientno;
-	// InetAddress iadd = InetAddress.getLocalHost();
+	public Canvas_Demo canvitas;
 	JFrame jf = new JFrame("scrnshots before sending");
 	JLabel jleb = new JLabel();
-
+	Robot rb = new Robot();
 	DatagramSocket soc;
 
-	Robot rb = new Robot();
-	// Toolkit tk = Toolkit.getDefaultToolkit();
-
-	// int x = tk.getScreenSize().height;
-	// int y = tk.getScreenSize().width;
+	
 
 	byte[] outbuff = new byte[62000];
 
@@ -162,10 +142,7 @@ class Vidthread extends Thread {
 	Rectangle rc;
 	
 	int bord = Canvas_Demo.panel.getY() - Canvas_Demo.frame.getY();
-	// Rectangle rc = new Rectangle(new
-	// Point(Canvas_Demo.frame.getX(),Canvas_Demo.frame.getY()),new
-	// Dimension(Canvas_Demo.frame.getWidth(),Canvas_Demo.frame.getHeight()));
-
+	
 	// Rectangle rv = new Rectangle(d);
 	public Vidthread(DatagramSocket ds) throws Exception {
 		soc = ds;
@@ -175,6 +152,7 @@ class Vidthread extends Thread {
 		jf.setLocation(500, 400);
 		jf.setVisible(true);
 	}
+	
 
 	public void run() {
 		while (true) {
@@ -195,7 +173,6 @@ class Vidthread extends Thread {
 				jf.add(jleb);
 				jf.repaint();
 				jf.revalidate();
-				// jf.setVisible(true);
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
 				
 				ImageIO.write(mybuf, "jpg", baos);
@@ -226,10 +203,10 @@ class Vidthread extends Thread {
 class Canvas_Demo {
 
 	// Create a media player factory
-	private MediaPlayerFactory mediaPlayerFactory;
+	//private MediaPlayerFactory mediaPlayerFactory;
 
 	// Create a new media player instance for the run-time platform
-	private EmbeddedMediaPlayer mediaPlayer;
+	public EmbeddedMediaPlayer mediaPlayer;
 
 	public static JPanel panel;
 	public static JPanel myjp;
@@ -239,120 +216,104 @@ class Canvas_Demo {
 	public static JTextArea txinp;
 	public static int xpos = 0, ypos = 0;
 	String url = "D:\\DownLoads\\Video\\freerun.MP4";
+	
+	
+	// Botones de pausa y play
+	public Button pause;
+	public Button play;
 
 	// Constructor
 	public Canvas_Demo() {
 
-		// Creating a panel that while contains the canvas
+		// Creación del panel de reproducción
 		panel = new JPanel();
 		panel.setLayout(new BorderLayout());
 
 		JPanel mypanel = new JPanel();
 		mypanel.setLayout(new GridLayout(2, 1));
 
-		// Creating the canvas and adding it to the panel :
+		// Creating the canvas and adding it to the panel:
 		canvas = new Canvas();
 		canvas.setBackground(Color.BLACK);
+		
 		// canvas.setSize(640, 480);
 		panel.add(canvas, BorderLayout.CENTER);
-		// panel.revalidate();
-		// panel.repaint();
 
 		// Creation a media player :
-		mediaPlayerFactory = new MediaPlayerFactory();
+		MediaPlayerFactory mediaPlayerFactory = new MediaPlayerFactory();
 		mediaPlayer = mediaPlayerFactory.newEmbeddedMediaPlayer();
 		CanvasVideoSurface videoSurface = mediaPlayerFactory.newVideoSurface(canvas);
 		mediaPlayer.setVideoSurface(videoSurface);
 
 		// Construction of the jframe :
-		frame = new JFrame("Imran & Ashik Player");
+		frame = new JFrame("Streaming Lab Redes");
+		
 		// frame.setLayout(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLocation(200, 0);
 		frame.setSize(640, 960);
 		frame.setAlwaysOnTop(true);
-
-		// Adding the panel to the
-		// panel.setSize(940, 480);
-		// mypanel.setLayout(new BorderLayout());
 		mypanel.add(panel);
 		frame.add(mypanel);
+		
+//		myjp = new JPanel(new GridLayout(1, 1));
+//		Button bna = new Button("Pausa");
+//		myjp.add(bna);
+		
 		frame.setVisible(true);
 		xpos = frame.getX();
 		ypos = frame.getY();
-
-		// Playing the video
-
-		myjp = new JPanel(new GridLayout(4, 1));
-
-		Button bn = new Button("Choose File");
-		myjp.add(bn);
-		Button sender = new Button("Send Text");
-
-		JScrollPane jpane = new JScrollPane();
-		jpane.setSize(300, 200);
-		// ta.setEditable(false);
-		ta = new JTextArea();
-		txinp = new JTextArea();
-		jpane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		jpane.add(ta);
-		jpane.setViewportView(ta);
-		myjp.add(jpane);
-		myjp.add(txinp);
-		myjp.add(sender);
-		ta.setText("Initialized");
-
-		ta.setCaretPosition(ta.getDocument().getLength());
-
-		mypanel.add(myjp);
-		mypanel.revalidate();
-		mypanel.repaint();
-
-		// textArea.setPreferredSize(new Dimension(500, 100));
-		// textArea.setEditable(false);
-		// textArea.setLineWrap(true);
-		// textArea.setWrapStyleWord(true);
-
-		// JScrollPane scroller = new JScrollPane(textArea);
-		// scroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-
-		// textArea.append(" tuighadha\n");
-		// textArea.setCaretPosition(textArea.getDocument().getLength());
-
-		// myjp.add(textArea);
-		// myjp.
-
-		bn.addActionListener(new ActionListener() {
-
-			//@Override
+		
+		pause = new Button("Pause");
+		play = new Button("Play");
+		
+		// Reproducción del video:
+		mediaPlayer.playMedia("Descargas/AVENGERS_4_Triler_Espaol_Latino_SUBTITULADO_2_Nuevo_2019_ENDGAME.mp3");
+		
+		// BOTONES
+		pause.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				JFileChooser jf = new JFileChooser();
-				jf.showOpenDialog(frame);
-				File f;
-				f = jf.getSelectedFile();
-				url = f.getPath();
-				System.out.println(url);
-				ta.setText("check text\n");
-				ta.append(url+"\n");
-				String[] mediaOptions = {""};
-				mediaPlayer.playMedia(url, mediaOptions);
+				mediaPlayer.pause();
 			}
 		});
-		sender.addActionListener(new ActionListener() {
-
-			//@Override
+		
+		play.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				Sentencefromserver.sendingSentence = txinp.getText();
-				txinp.setText(null);
-				Canvas_Demo.ta.append("From Myself: " + Sentencefromserver.sendingSentence + "\n");
-				Canvas_Demo.myjp.revalidate();
-				Canvas_Demo.myjp.repaint();
+				mediaPlayer.play();	
 			}
 		});
-
 	}
+	
+	
+	public void pausarVideo() {
+		pause.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mediaPlayer.pause();
+			}
+		});
+	}
+	
+	public void playVideo(){
+		play.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mediaPlayer.play();	
+			}
+		});
+	}
+	
+	
+//	public void ReplayVideo(){
+//		play.addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				mediaPlayer.release();	
+//			}
+//		});
+//	}
 }
 
 class SThread extends Thread {
@@ -364,9 +325,6 @@ class SThread extends Thread {
 
 	public SThread(int a) {
 		srcid = a;
-		// start();
-		// fowl fl = new fowl(inFromClient, srcid);
-		// fl.start();
 	}
 
 	public void run() {
@@ -376,7 +334,7 @@ class SThread extends Thread {
 				clientSentence = inFromClient.readLine();
 				// clientSentence = inFromClient.readLine();
 
-				System.out.println("From Client " + srcid + ": " + clientSentence);
+				//System.out.println("From Client " + srcid + ": " + clientSentence);
 				Canvas_Demo.ta.append("From Client " + srcid + ": " + clientSentence + "\n");
 				
 				for(int i=0; i<JavaServer.i; i++){
@@ -396,9 +354,9 @@ class SThread extends Thread {
 }
 
 class Sentencefromserver extends Thread {
-	
+
 	public static String sendingSentence;
-	
+
 	public Sentencefromserver() {
 
 	}
@@ -409,11 +367,10 @@ class Sentencefromserver extends Thread {
 
 			try {
 
-				if(sendingSentence.length()>0)
-				{
+				if (sendingSentence.length() > 0) {
 					for (int i = 0; i < JavaServer.i; i++) {
-						JavaServer.outToClient[i].writeBytes("From Server: "+sendingSentence+'\n');
-						
+						JavaServer.outToClient[i].writeBytes("From Server: " + sendingSentence + '\n');
+
 					}
 					sendingSentence = null;
 				}
