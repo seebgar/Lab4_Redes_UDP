@@ -36,9 +36,10 @@ public class JavaClient {
 
 		// CAMBIOS
 
-		// byte[] ipAddr = new byte[] { 127, 2, 2, 0 };
+		// byte[] ipAddr = new byte[] { 127, 2, 2, 0 };//CAMBIO!!!!!!!
 
-		InetAddress addr = InetAddress.getByName("157.253.228.86");
+		InetAddress addr = InetAddress.getByName("192.168.56.1");// la de mi casa
+//		InetAddress addr = InetAddress.getByName("157.253.228.86"); //la del ml
 		// InetAddress addr = InetAddress.getByName("157.253.42.56");
 
 		// CAMBIOS
@@ -58,7 +59,8 @@ public class JavaClient {
 
 		String modifiedSentence;
 
-		InetAddress inetAddress = InetAddress.getByName("157.253.228.86");//la del ML
+		InetAddress inetAddress = InetAddress.getByName("192.168.56.1");//la de mi casa
+//		InetAddress inetAddress = InetAddress.getByName("157.253.228.86");//la del ML
 		// InetAddress inetAddress = InetAddress.getByName("157.253.42.56");
 
 		// .getByName(String hostname); "CL11"

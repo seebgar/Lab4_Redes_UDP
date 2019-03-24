@@ -269,7 +269,7 @@ class Canvas_Demo {
 		play = new Button("Play");
 		
 		// Reproducción del video:
-		mediaPlayer.playMedia("Descargas/AVENGERS_4_Triler_Espaol_Latino_SUBTITULADO_2_Nuevo_2019_ENDGAME.mp3");
+		mediaPlayer.playMedia("Descargas/VID-20190324-WA0012.mp4");
 		
 		// BOTONES
 		pause.addActionListener(new ActionListener() {
