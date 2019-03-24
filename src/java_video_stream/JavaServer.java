@@ -50,7 +50,8 @@ public class JavaServer {
 		public JavaServer() throws Exception {
 		
 		
-		NativeLibrary.addSearchPath("libvlc", System.getenv("ProgramFiles") + "\\VideoLAN\\VLC");
+		NativeLibrary.addSearchPath("libvlc",  "C:\\Program Files\\VideoLAN\\VLC");
+//		System.setProperty("jna-library.path", System.getenv("ProgramFiles") + "\\VideoLAN\\VLC");
 
 		JavaServer.inet = new InetAddress[30];
 		
