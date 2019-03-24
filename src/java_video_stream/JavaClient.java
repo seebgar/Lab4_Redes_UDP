@@ -21,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+
 /**
  *
  * @author msara
@@ -29,6 +30,12 @@ public class JavaClient {
 	public static DatagramSocket ds;
 
 	public static void main(String[] args) throws Exception {
+		
+		new JavaClient().consume();
+		
+	}
+	
+	public void consume() throws Exception {
 		ds = new DatagramSocket();
 
 		byte[] init = new byte[62000];
@@ -79,6 +86,8 @@ public class JavaClient {
 
 		write.join();
 		read.join();
+		
+		
 		clientSocket.close();
 	}
 }

@@ -5,5 +5,6 @@
 	<classpathentry kind="lib" path="jna-3.3.0-platform.jar"/>
 	<classpathentry kind="lib" path="vlcj-2.1.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="GLoad 1.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
