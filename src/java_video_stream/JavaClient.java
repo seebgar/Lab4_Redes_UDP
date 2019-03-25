@@ -54,7 +54,6 @@ public class JavaClient {
 
 		// CAMBIOS
 
-		// byte[] ipAddr = new byte[] { 127, 2, 2, 0 };//CAMBIO!!!!!!!
 
 		InetAddress addr = InetAddress.getByName("192.168.56.1");// la de mi casa
 //		InetAddress addr = InetAddress.getByName("157.253.228.86"); //la del ml
