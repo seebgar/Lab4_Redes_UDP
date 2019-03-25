@@ -9,7 +9,11 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -21,6 +25,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import Pruebas.Generator;
+
 
 /**
  *
@@ -28,6 +34,9 @@ import javax.swing.JTextArea;
  */
 public class JavaClient {
 	public static DatagramSocket ds;
+	private long tInicio;
+	private long tFin;
+	private long tRta;
 
 	public static void main(String[] args) throws Exception {
 		
@@ -36,6 +45,8 @@ public class JavaClient {
 	}
 	
 	public void consume() throws Exception {
+		
+		tInicio= System.currentTimeMillis();
 		ds = new DatagramSocket();
 
 		byte[] init = new byte[62000];
@@ -87,8 +98,26 @@ public class JavaClient {
 		write.join();
 		read.join();
 		
-		
+		tFin= System.currentTimeMillis();
+		impResultados();
+		System.out.println("tiempo de respuesta: "+tRta);
 		clientSocket.close();
+	}
+	
+	private void impResultados() {
+		tRta= tFin-tInicio;
+		try {
+			File tiemp= new File("./docs/datos"+Generator.nThreads+"-"+Generator.numberOfTasks);
+			PrintWriter pw= new PrintWriter(new FileWriter(tiemp, true));
+			pw.println(tRta);
+			pw.println();
+			pw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 	}
 }
 

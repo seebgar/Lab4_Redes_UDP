@@ -3,7 +3,6 @@ package Pruebas;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
-import java_video_stream.JavaClient;
 import uniandes.gload.core.LoadGenerator;
 import uniandes.gload.core.Task;
 
@@ -19,9 +18,9 @@ public class Generator {
 	long[] transaccionesFallidas = new long[numberOfTasks];
 	long[] tiempoVerificacion = new long[numberOfTasks];
 	public Generator(){
-		nThreads=60;
+		nThreads=150;
 		work=crearTask();
-		numberOfTasks=480; //400,20,80
+		numberOfTasks=60; //400,20,80
 		gapBetweenGap=20;//20,40,100
         try {
 			writer = new PrintWriter("./docs/datosTransaccionesPerdidas"+nThreads +"-" + numberOfTasks + "-" + gapBetweenGap+ "prueba");

@@ -269,7 +269,7 @@ class Canvas_Demo {
 		play = new Button("Play");
 		
 		// Reproducción del video:
-		mediaPlayer.playMedia("Descargas/VID-20190324-WA0012.mp4");
+		mediaPlayer.playMedia("./Descargas/VID-20190324-WA0012.mp4");
 		
 		// BOTONES
 		pause.addActionListener(new ActionListener() {
