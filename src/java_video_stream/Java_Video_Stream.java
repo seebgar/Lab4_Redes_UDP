@@ -5,10 +5,7 @@
  */
 package java_video_stream;
 
-/**
- *
- * @author Abdul-Malek
- */
+
 public class Java_Video_Stream {
 
     /**
