@@ -24,10 +24,7 @@ import java.awt.image.BufferedImage;
 
 public class JavaServer {
 
-	/**
-	 * @param args
-	 *            the command line arguments
-	 */
+	
 	
 	//------------------------------------------------------------------------
 	// Atributos
@@ -226,7 +223,7 @@ class Canvas_Demo {
 	// Constructor
 	public Canvas_Demo() {
 
-		// Creación del panel de reproducción
+		// CreaciÃ³n del panel de reproducciÃ³n
 		panel = new JPanel();
 		panel.setLayout(new BorderLayout());
 
@@ -268,7 +265,7 @@ class Canvas_Demo {
 		pause = new Button("Pause");
 		play = new Button("Play");
 		
-		// Reproducción del video:
+		// ReproducciÃ³n del video:
 		mediaPlayer.playMedia("./Descargas/VID-20190324-WA0012.mp4");
 		
 		// BOTONES
