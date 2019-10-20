@@ -28,10 +28,7 @@ import javax.swing.JTextArea;
 import Pruebas.Generator;
 
 
-/**
- *
- * @author msara
- */
+
 public class JavaClient {
 	public static DatagramSocket ds;
 	private long tInicio;
